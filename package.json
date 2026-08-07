@@ -1,0 +1,27 @@
+{
+  "name": "abtalks-redesign",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vivekbisht2030/abtalks-redesign.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/vivekbisht2030/abtalks-redesign/issues"
+  },
+  "homepage": "https://github.com/vivekbisht2030/abtalks-redesign#readme",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "ejs": "^6.0.1",
+    "express": "^5.2.1"
+  }
+}
