@@ -212,7 +212,6 @@
     @media (max-width: 576px) {
         .mobile-hero {
             margin-top: 15px !important;
-            /* Yahan margin badha diya taaki agla box screen se neeche chala jaye */
             margin-bottom: 100px !important; 
         }
         .mobile-hero h1 {
@@ -380,17 +379,44 @@
     </div>
   </div>
 
-<!-- 🔥 JAVASCRIPT FOR UI HACK & NEW BUTTONS 🔥 -->
+<!-- 🔥 JAVASCRIPT FOR UI HACK & PERSISTENT SESSION 🔥 -->
 <script>
     let isLoggedIn = false;
 
+    // IDs match data.json (1: Vivek, 2: Yogesh, 3: Vishav, 4: Nitesh, 5: Sameer)
     const mockUsers = [
-        { name: "Vivek Bisht", username: "@vivek_dev", track: "Full-Stack Web Development", location: "Chandigarh, India" },
-        { name: "Vishav", username: "@vishav_code", track: "Data Structures & Algorithms", location: "Chandigarh, India" },
-        { name: "Yogesh", username: "@yogesh_builds", track: "Backend Engineering", location: "Chandigarh, India" },
-        { name: "Nitesh", username: "@nitesh_ui", track: "Frontend Architecture", location: "Chandigarh, India" },
-        { name: "Sameer", username: "@sameer_logic", track: "AI & Machine Learning", location: "Chandigarh, India" }
+        { id: 1, name: "Vivek Bisht", username: "@vivek_dev", track: "Full-Stack Web Development", location: "Chandigarh, India" },
+        { id: 2, name: "Yogesh Kumar", username: "@yogesh_builds", track: "Backend Engineering", location: "Chandigarh, India" },
+        { id: 3, name: "Vishavpreet Singh", username: "@vishav_code", track: "Data Structures & Algorithms", location: "Chandigarh, India" },
+        { id: 4, name: "Nitesh Kumar", username: "@nitesh_ui", track: "Frontend Architecture", location: "Chandigarh, India" },
+        { id: 5, name: "Sameer Singh", username: "@sameer_logic", track: "AI & Machine Learning", location: "Chandigarh, India" }
     ];
+
+    // Page load hote hi check karo agar pehle se login ho toh state restore karo
+    window.addEventListener('DOMContentLoaded', () => {
+        const savedLogin = localStorage.getItem('abtalks_logged_in');
+        const savedUserStr = localStorage.getItem('abtalks_user');
+        if (savedLogin === 'true' && savedUserStr) {
+            isLoggedIn = true;
+            const user = JSON.parse(savedUserStr);
+            applyUserData(user);
+        }
+    });
+
+    function applyUserData(user) {
+        document.getElementById('modalName').innerText = user.name;
+        document.getElementById('modalUsername').innerText = user.username;
+        document.getElementById('modalTrack').innerText = user.track;
+        document.getElementById('modalLocation').innerText = user.location;
+        
+        document.getElementById('navWrapper').classList.add('is-logged-in');
+        document.getElementById('activeDot').style.display = 'block';
+
+        // Sabhi dashboard links mein active user ki ID attach kar do
+        document.querySelectorAll('a[href*="/dashboard"]').forEach(el => {
+            el.href = `/dashboard?userId=${user.id}`;
+        });
+    }
 
     function handleProfileClick() {
         if (!isLoggedIn) {
@@ -422,24 +448,28 @@
 
     function simulateLogin() {
         isLoggedIn = true;
-        
         const randomUser = mockUsers[Math.floor(Math.random() * mockUsers.length)];
         
-        document.getElementById('modalName').innerText = randomUser.name;
-        document.getElementById('modalUsername').innerText = randomUser.username;
-        document.getElementById('modalTrack').innerText = randomUser.track;
-        document.getElementById('modalLocation').innerText = randomUser.location;
-        
-        document.getElementById('navWrapper').classList.add('is-logged-in');
-        document.getElementById('activeDot').style.display = 'block';
+        // Browser mein session save karo taaki refresh ya page switch karne par logout na ho
+        localStorage.setItem('abtalks_logged_in', 'true');
+        localStorage.setItem('abtalks_user', JSON.stringify(randomUser));
+
+        applyUserData(randomUser);
     }
 
     function simulateLogout() {
         isLoggedIn = false;
+        localStorage.removeItem('abtalks_logged_in');
+        localStorage.removeItem('abtalks_user');
         
         document.getElementById('navWrapper').classList.remove('is-logged-in');
         document.getElementById('activeDot').style.display = 'none';
         document.getElementById('navDropdown').classList.remove('show');
+
+        // Reset dashboard links
+        document.querySelectorAll('a[href*="/dashboard"]').forEach(el => {
+            el.href = `/dashboard`;
+        });
     }
 
     function toggleMenu() {
