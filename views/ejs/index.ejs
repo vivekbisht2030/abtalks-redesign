@@ -1,7 +1,5 @@
 <%- layout('layout/boilerplate') %>
 
-<%- layout('layout/boilerplate') %>
-
 <style>
     /* Dark Theme Setup */
     body {
@@ -18,12 +16,11 @@
         justify-content: space-between;
         align-items: center;
         padding: 12px 20px;
-        background-color: rgba(15, 23, 42, 0.85); 
+        background-color: #0f172a; 
         border-bottom: 1px solid #334155;
         position: sticky; 
         top: 0;
         z-index: 1000;
-        backdrop-filter: blur(12px); 
     }
 
     .brand-logo {
@@ -70,12 +67,10 @@
     }
 
     /* 🔥 AUTHENTICATION VISIBILITY LOGIC 🔥 */
-    /* By default, hide both desktop and mobile navigation */
     .auth-desktop, .auth-mobile {
         display: none;
     }
 
-    /* When logged in on Desktop (>576px) */
     @media (min-width: 577px) {
         .is-logged-in .auth-desktop { 
             display: flex; 
@@ -84,7 +79,6 @@
         }
     }
 
-    /* When logged in on Mobile (<=576px, handles 390px) */
     @media (max-width: 576px) {
         .is-logged-in .auth-mobile { 
             display: block; 
@@ -173,33 +167,107 @@
     .btn-glow { background: linear-gradient(90deg, #6366f1, #8b5cf6); color: white; border: none; border-radius: 12px; padding: 12px 20px; font-weight: 700; font-size: 1rem; width: 100%; cursor: pointer; box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4); }
     .footer-links a { color: #94a3b8; text-decoration: none; margin: 0 8px; font-size: 0.8rem; transition: color 0.2s; }
     .footer-links a:hover { color: #f8fafc; }
+
+    /* 🔥 HERO ACTION BUTTONS CSS 🔥 */
+    .action-buttons-container {
+        display: flex;
+        gap: 12px;
+        justify-content: center;
+        margin-top: 30px; 
+        margin-bottom: 20px;
+    }
+
+    .btn-primary-custom {
+        background-color: #7b5cfa; 
+        color: white;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 8px;
+        font-size: 0.95rem;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        box-shadow: 0 4px 15px rgba(123, 92, 250, 0.4);
+    }
+    .btn-primary-custom:hover { background-color: #6344e6; }
+
+    .btn-secondary-custom {
+        background-color: transparent;
+        color: #cbd5e1;
+        border: 2px solid #475569;
+        padding: 12px 20px;
+        border-radius: 8px;
+        font-size: 0.95rem;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    .btn-secondary-custom:hover {
+        color: white;
+        border-color: #cbd5e1;
+        background-color: rgba(255, 255, 255, 0.05);
+    }
+
+    /* 🔥 MOBILE SPECIFIC OPTIMIZATIONS (For 390px & Below) 🔥 */
+    @media (max-width: 576px) {
+        .mobile-hero {
+            margin-top: 15px !important;
+            /* Yahan margin badha diya taaki agla box screen se neeche chala jaye */
+            margin-bottom: 100px !important; 
+        }
+        .mobile-hero h1 {
+            font-size: 2.2rem !important;
+            margin-bottom: 10px !important;
+        }
+        .mobile-hero p.lead-text {
+            font-size: 0.9rem !important;
+            margin-bottom: 15px !important;
+        }
+        .mobile-text-box {
+            margin-top: 15px !important;
+            margin-bottom: 15px !important;
+        }
+        .mobile-text-box h3 {
+            font-size: 1.1rem !important;
+            margin-bottom: 8px !important;
+        }
+        .mobile-text-box p {
+            font-size: 0.85rem !important;
+            line-height: 1.4 !important;
+            padding: 0 !important;
+        }
+        .action-buttons-container {
+            margin-top: 15px !important;
+            gap: 10px;
+        }
+        .btn-primary-custom, .btn-secondary-custom {
+            padding: 10px 10px;
+            font-size: 0.85rem;
+            flex: 1; 
+            white-space: nowrap; 
+        }
+    }
 </style>
 
 <!-- 🔥 UNIVERSAL HEADER 🔥 -->
 <nav class="custom-navbar">
     <h2 class="brand-logo">ABTalks</h2>
     
-    <!-- Added id "navWrapper" to control visibility states -->
     <div id="navWrapper" class="nav-controls">
-        
-        <!-- Desktop Nav Links (Managed by CSS logic) -->
         <div class="auth-desktop">
             <a href="/day/12" class="btn-nav-secondary">Day 12 👀</a>
             <a href="/dashboard" class="btn-nav-primary">Dashboard 🚀</a>
         </div>
 
-        <!-- Mobile Hamburger Menu (Managed by CSS logic) -->
         <button class="hamburger-btn auth-mobile" onclick="toggleMenu()">
             <i class="fa-solid fa-bars"></i>
         </button>
         
-        <!-- Dropdown for Mobile Hamburger -->
         <div id="navDropdown" class="mobile-dropdown">
             <a href="/day/12" class="dropdown-link">Day 12 👀</a>
             <a href="/dashboard" class="dropdown-link primary">Dashboard 🚀</a>
         </div>
 
-        <!-- Profile Circle (Always visible) -->
         <button id="profileCircleBtn" class="btn-profile-circle" onclick="handleProfileClick()">
             <i class="fa-solid fa-user"></i>
             <div id="activeDot" class="status-dot"></div>
@@ -209,37 +277,49 @@
 
 <div class="mobile-container">
     
-    <!-- HERO SECTION -->
-    <header class="text-center mb-4 mt-2">
+    <!-- 🔥 FIXED SPACING HERO SECTION 🔥 -->
+    <header class="text-center mt-4 mb-5 mobile-hero">
         <h1 class="display-5 fw-bold mb-3">Code. Commit.<br><span class="text-gradient">Get Hired.</span></h1>
-        <p class="text-secondary">Stop watching tutorials. Start building proof of work.</p>
+        
+        <p class="text-secondary mb-3 lead-text">Stop watching tutorials. Start building proof of work.</p>
+        
+        <div class="mx-auto mt-4 mb-4 mobile-text-box" style="max-width: 95%;">
+            <h3 class="fw-bold mb-3 fs-5">What is ABTalks? 🤔</h3>
+            <p class="text-light text-start" style="font-size: 0.95rem; line-height: 1.6; padding: 0 10px;">
+                ABTalks is an intensive, <strong>strict 60-day coding challenge</strong> meticulously designed for engineering students who want to break out of tutorial hell. Our mission is to help you build unbreakable consistency, develop real-world proof of work, and get noticed by top-tier tech recruiters. 
+                <br><br>
+                Whether you are aiming for product-based companies or building your own digital venture, this platform forces you to learn, build, and share publicly every single day. Here is exactly how the blueprint works:
+            </p>
+        </div>
+
+        <div class="action-buttons-container">
+            <button class="btn-primary-custom" onclick="openLoginModal()">Accept Challenge 🚀</button>
+            <button class="btn-secondary-custom" onclick="scrollToSteps()">See Blueprint 👇</button>
+        </div>
     </header>
 
-    <!-- EXPLANATION SECTION -->
-    <section class="mb-4">
+    <!-- STEPS SECTION -->
+    <section class="mb-4" id="steps-section" style="margin-top: 40px; scroll-margin-top: 100px;">
         <div class="feature-card">
-            <h3 class="fw-bold mb-3 fs-4 text-center">What is ABTalks? 🤔</h3>
-            <p class="text-light mb-4" style="font-size: 0.95rem; line-height: 1.6;">
-                ABTalks is a strict <strong>60-day coding challenge</strong> designed to help Indian college students build unbreakable consistency and get noticed by recruiters. Here is exactly how it works:
-            </p>
+            <h3 class="fw-bold mb-4 fs-5 text-center">Your Daily Blueprint 📋</h3>
             
             <h6 class="fw-bold text-info">🎯 Step 1: Pick a Track</h6>
-            <p class="text-secondary small mb-4">Choose a domain (Web Dev, DSA, AI, etc.). You must build or solve something in this track every single day.</p>
+            <p class="text-secondary small mb-4">Choose a specific domain, such as Full-Stack Web Development, Data Structures and Algorithms, or Artificial Intelligence. You must build a project or solve a problem within this chosen track every single day.</p>
 
             <h6 class="fw-bold text-success">💻 Step 2: The Daily Proof</h6>
-            <p class="text-secondary small mb-4">Writing code isn't enough. Every day, you MUST submit two things on this platform:<br>
-            <strong class="text-light">1. A GitHub Commit link</strong> (Proof that you wrote code).<br>
-            <strong class="text-light">2. A LinkedIn Post link</strong> (Proof that you are sharing your learnings).</p>
+            <p class="text-secondary small mb-4">Writing the code is only half the battle. Every day, you are required to submit two specific items on this platform:<br>
+            <strong class="text-light">1. A GitHub Repository link</strong> (Proof of your daily coding progress).<br>
+            <strong class="text-light">2. A LinkedIn Post link</strong> (Proof that you are documenting and sharing your learnings publicly).</p>
 
             <h6 class="fw-bold text-primary">🔥 Step 3: Maintain the Streak</h6>
-            <p class="text-secondary small mb-0">Most students do this late at night on their phones. Your dashboard tracks your progress. Miss one day, and your streak resets. Complete 60 days, and you stand out from 99% of your peers.</p>
+            <p class="text-secondary small mb-0">Your personal dashboard will track your daily progress. If you miss a single submission, your entire streak will reset to zero. Complete the entire 60 days to build a robust portfolio that stands out to technical recruiters.</p>
         </div>
     </section>
 
 </div>
 
 <!-- PROFESSIONAL FOOTER -->
-<footer class="text-center pb-5 pt-4 mt-2" style="border-top: 1px solid #334155;">
+<footer class="text-center pb-5 pt-4 mt-4" style="border-top: 1px solid #334155;">
     <div class="footer-links mb-3">
         <a href="#">About Us</a>
         <a href="#">Terms of Service</a>
@@ -267,7 +347,6 @@
             Login as Demo Student 🚀
         </button>
         
-        <!-- Updated to just Note -->
         <p class="text-warning small mt-3 mb-0" style="font-size: 0.75rem;">
             <em>*Note: Click this mock login to authenticate the session, reveal the navigation menu, and proceed to the application.*</em>
         </p>
@@ -285,7 +364,6 @@
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body text-start pt-2 pb-4">
-          <!-- Dynamic Data -->
           <h4 id="modalName" class="text-light fw-bold mb-0">Name</h4>
           <p id="modalUsername" class="text-secondary small mb-3">@username</p>
           
@@ -302,11 +380,10 @@
     </div>
   </div>
 
-<!-- 🔥 JAVASCRIPT FOR UI HACK 🔥 -->
+<!-- 🔥 JAVASCRIPT FOR UI HACK & NEW BUTTONS 🔥 -->
 <script>
     let isLoggedIn = false;
 
-    // The 5 mock users (Tera aur tere doston ka data)
     const mockUsers = [
         { name: "Vivek Bisht", username: "@vivek_dev", track: "Full-Stack Web Development", location: "Chandigarh, India" },
         { name: "Vishav", username: "@vishav_code", track: "Data Structures & Algorithms", location: "Chandigarh, India" },
@@ -326,10 +403,26 @@
         }
     }
 
+    function openLoginModal() {
+        if (!isLoggedIn) {
+            var loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+            loginModal.show();
+        } else {
+            var profileModal = new bootstrap.Modal(document.getElementById('profileModal'));
+            profileModal.show();
+        }
+    }
+
+    function scrollToSteps() {
+        const stepsDiv = document.getElementById('steps-section');
+        if (stepsDiv) {
+            stepsDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    }
+
     function simulateLogin() {
         isLoggedIn = true;
         
-        // Random profile selection
         const randomUser = mockUsers[Math.floor(Math.random() * mockUsers.length)];
         
         document.getElementById('modalName').innerText = randomUser.name;
@@ -337,7 +430,6 @@
         document.getElementById('modalTrack').innerText = randomUser.track;
         document.getElementById('modalLocation').innerText = randomUser.location;
         
-        // ADDING THE CLASS THAT REVEALS THE NAVIGATION MAGIC
         document.getElementById('navWrapper').classList.add('is-logged-in');
         document.getElementById('activeDot').style.display = 'block';
     }
@@ -345,7 +437,6 @@
     function simulateLogout() {
         isLoggedIn = false;
         
-        // REMOVE THE CLASS TO HIDE EVERYTHING AGAIN
         document.getElementById('navWrapper').classList.remove('is-logged-in');
         document.getElementById('activeDot').style.display = 'none';
         document.getElementById('navDropdown').classList.remove('show');
