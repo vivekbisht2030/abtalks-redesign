@@ -1,6 +1,178 @@
 <%- layout('layout/boilerplate') %>
 
+<%- layout('layout/boilerplate') %>
+
+<style>
+    /* Dark Theme Setup */
+    body {
+        background-color: #0f172a; 
+        color: #f8fafc;
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* 📱 Universal Header */
+    .custom-navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 20px;
+        background-color: rgba(15, 23, 42, 0.85); 
+        border-bottom: 1px solid #334155;
+        position: sticky; 
+        top: 0;
+        z-index: 1000;
+        backdrop-filter: blur(12px); 
+    }
+
+    .brand-logo {
+        font-weight: 800;
+        font-size: 1.4rem;
+        background: linear-gradient(90deg, #818cf8, #c084fc);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin: 0;
+    }
+
+    /* Right side controls wrapper */
+    .nav-controls {
+        display: flex;
+        gap: 16px;
+        align-items: center;
+        position: relative;
+    }
+
+    /* Buttons */
+    .btn-nav-primary {
+        background: linear-gradient(90deg, #6366f1, #8b5cf6);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 8px 16px;
+        font-weight: 700;
+        font-size: 0.85rem; 
+        text-decoration: none;
+        box-shadow: 0 4px 10px rgba(99, 102, 241, 0.3);
+    }
+
+    .btn-nav-secondary {
+        border: 1px solid #475569;
+        color: #cbd5e1;
+        border-radius: 8px;
+        padding: 8px 16px;
+        font-weight: 600;
+        font-size: 0.85rem;
+        text-decoration: none;
+        background: transparent;
+        cursor: pointer;
+    }
+
+    /* 🔥 AUTHENTICATION VISIBILITY LOGIC 🔥 */
+    /* By default, hide both desktop and mobile navigation */
+    .auth-desktop, .auth-mobile {
+        display: none;
+    }
+
+    /* When logged in on Desktop (>576px) */
+    @media (min-width: 577px) {
+        .is-logged-in .auth-desktop { 
+            display: flex; 
+            gap: 12px; 
+            align-items: center; 
+        }
+    }
+
+    /* When logged in on Mobile (<=576px, handles 390px) */
+    @media (max-width: 576px) {
+        .is-logged-in .auth-mobile { 
+            display: block; 
+        }
+    }
+
+    /* Hamburger Menu Button */
+    .hamburger-btn {
+        background: transparent;
+        border: none;
+        color: #cbd5e1;
+        font-size: 1.5rem;
+        padding: 0;
+        cursor: pointer;
+        transition: color 0.2s;
+    }
+    .hamburger-btn:hover { color: #818cf8; }
+
+    /* Circular Profile Button */
+    .btn-profile-circle {
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        background: linear-gradient(90deg, #6366f1, #8b5cf6);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        border: none;
+        font-size: 1.2rem;
+        box-shadow: 0 4px 10px rgba(99, 102, 241, 0.3);
+        cursor: pointer;
+        position: relative;
+    }
+    
+    .status-dot {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 12px;
+        height: 12px;
+        background-color: #22c55e;
+        border: 2px solid #0f172a;
+        border-radius: 50%;
+        display: none; 
+    }
+
+    /* Mobile Dropdown Menu */
+    .mobile-dropdown {
+        display: none; 
+        position: absolute;
+        top: 140%; 
+        right: 50px; 
+        background-color: #1e293b;
+        border: 1px solid #334155;
+        border-radius: 12px;
+        padding: 12px;
+        flex-direction: column;
+        gap: 10px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+        min-width: 160px;
+    }
+    .mobile-dropdown.show { display: flex; }
+    
+    .dropdown-link {
+        border: 1px solid #475569;
+        color: #cbd5e1;
+        border-radius: 8px;
+        padding: 10px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        text-decoration: none;
+        text-align: center;
+        transition: all 0.2s;
+    }
+    .dropdown-link.primary {
+        background: linear-gradient(90deg, #6366f1, #8b5cf6);
+        color: white;
+        border: none;
+    }
+    
+    /* Layout */
+    .mobile-container { max-width: 480px; margin: 0 auto; padding: 24px 15px; }
+    .text-gradient { background: linear-gradient(90deg, #818cf8, #c084fc); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; font-weight: 800; }
+    .feature-card { background: rgba(30, 41, 59, 0.7); border: 1px solid #334155; border-radius: 16px; padding: 24px; margin-bottom: 20px; backdrop-filter: blur(10px); }
+    .btn-glow { background: linear-gradient(90deg, #6366f1, #8b5cf6); color: white; border: none; border-radius: 12px; padding: 12px 20px; font-weight: 700; font-size: 1rem; width: 100%; cursor: pointer; box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4); }
+    .footer-links a { color: #94a3b8; text-decoration: none; margin: 0 8px; font-size: 0.8rem; transition: color 0.2s; }
+    .footer-links a:hover { color: #f8fafc; }
+</style>
+
 <!-- Yogesh will add the awesome landing page UI here -->
-<div class="text-center mt-5 text-white">
-    <h1>Landing Page</h1>
-</div>
