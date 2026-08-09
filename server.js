@@ -28,15 +28,15 @@ app.get('/', (req, res) => {
 // 2. Student Dashboard ( /dashboard )
 app.get('/dashboard', (req, res) => {
     try {
-        const rawData = fs.readFileSync('./data.json', 'utf8');
+        const dataPath = path.join(__dirname, 'data.json');
+        const rawData = fs.readFileSync(dataPath, 'utf8');
         const jsonData = JSON.parse(rawData);
         
-        // URL se userId uthao, agar na ho toh default 1 (Vivek)
         const userId = req.query.userId || 1;
         const currentUser = jsonData.users.find(u => u.id == userId) || jsonData.users[0];
 
         res.render('ejs/dashboard.ejs', { user: currentUser });
-    } catch (err) {
+    }     catch (err) {
         console.error("Error reading data.json:", err);
         res.status(500).send("Server Error");
     }
@@ -45,10 +45,10 @@ app.get('/dashboard', (req, res) => {
 // 3. Challenge Day / Progress Tracker ( /day/12 )
 app.get('/day/:dayNumber', (req, res) => {
     try {
-        const rawData = fs.readFileSync('./data.json', 'utf8');
+        const dataPath = path.join(__dirname, 'data.json');
+        const rawData = fs.readFileSync(dataPath, 'utf8');
         const jsonData = JSON.parse(rawData);
-        
-        // URL se userId uthao taaki jisne login kiya hai usi ka data day.ejs mein jaye
+     
         const userId = req.query.userId || 1;
         const currentUser = jsonData.users.find(u => u.id == userId) || jsonData.users[0];
 
