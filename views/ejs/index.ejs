@@ -154,6 +154,14 @@
         text-align: center;
         transition: all 0.2s;
     }
+    
+    /* REQ 1: Added visual feedback (glow/highlight) on click for secondary link */
+    .dropdown-link:active {
+        background-color: rgba(255, 255, 255, 0.1);
+        border-color: #cbd5e1;
+        color: white;
+    }
+    
     .dropdown-link.primary {
         background: linear-gradient(90deg, #6366f1, #8b5cf6);
         color: white;
@@ -254,20 +262,21 @@
     
     <div id="navWrapper" class="nav-controls">
         <div class="auth-desktop">
-            <a href="/day/12" class="btn-nav-secondary">Day 12 👀</a>
+            <a href="/day/12" class="btn-nav-secondary">Progress Tracker</a>
             <a href="/dashboard" class="btn-nav-primary">Dashboard 🚀</a>
         </div>
 
-        <button class="hamburger-btn auth-mobile" onclick="toggleMenu()">
+        <!-- Added ID to hamburger button for easier outside click detection -->
+        <button id="hamburgerBtn" class="hamburger-btn auth-mobile" onclick="toggleMenu(event)">
             <i class="fa-solid fa-bars"></i>
         </button>
         
         <div id="navDropdown" class="mobile-dropdown">
-            <a href="/day/12" class="dropdown-link">Day 12 👀</a>
             <a href="/dashboard" class="dropdown-link primary">Dashboard 🚀</a>
+            <a href="/day/12" class="dropdown-link">Progress Tracker</a>
         </div>
 
-        <button id="profileCircleBtn" class="btn-profile-circle" onclick="handleProfileClick()">
+        <button id="profileCircleBtn" class="btn-profile-circle" onclick="handleProfileClick(event)">
             <i class="fa-solid fa-user"></i>
             <div id="activeDot" class="status-dot"></div>
         </button>
@@ -276,7 +285,6 @@
 
 <div class="mobile-container">
     
-    <!-- 🔥 FIXED SPACING HERO SECTION 🔥 -->
     <header class="text-center mt-4 mb-5 mobile-hero">
         <h1 class="display-5 fw-bold mb-3">Code. Commit.<br><span class="text-gradient">Get Hired.</span></h1>
         
@@ -297,7 +305,6 @@
         </div>
     </header>
 
-    <!-- STEPS SECTION -->
     <section class="mb-4" id="steps-section" style="margin-top: 40px; scroll-margin-top: 100px;">
         <div class="feature-card">
             <h3 class="fw-bold mb-4 fs-5 text-center">Your Daily Blueprint 📋</h3>
@@ -317,7 +324,6 @@
 
 </div>
 
-<!-- PROFESSIONAL FOOTER -->
 <footer class="text-center pb-5 pt-4 mt-4" style="border-top: 1px solid #334155;">
     <div class="footer-links mb-3">
         <a href="#">About Us</a>
@@ -326,10 +332,6 @@
     </div>
     <p class="small m-0" style="color: #64748b;">&copy; 2026 ABTalks System. All rights reserved.</p>
 </footer>
-
-<!-- ==========================================
-     MODALS
-=========================================== -->
 
 <!-- 1. LOGIN MODAL -->
 <div class="modal fade" id="loginModal" tabindex="-1" aria-hidden="true">
@@ -340,15 +342,16 @@
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body text-center pt-2 pb-4">
-        <p class="text-secondary small mb-4">As per hackathon rules, real authentication is disabled. Proceed with the demo account to view the mocked experience.</p>
+        
+        <p class="text-secondary small mb-3">As per hackathon rules, real authentication is disabled.</p>
+        
+        <p class="text-danger mb-4 px-2" style="font-size: 0.75rem; font-style: italic; font-weight: 500; line-height: 1.4;">
+            *Note: We have 5 different developer profiles mapped in our database. Clicking login will randomly assign you one of them to explore the personalized mocked experience.*
+        </p>
         
         <button class="btn-glow" data-bs-dismiss="modal" onclick="simulateLogin()">
             Login as Demo Student 🚀
         </button>
-        
-        <p class="text-warning small mt-3 mb-0" style="font-size: 0.75rem;">
-            <em>*Note: Click this mock login to authenticate the session, reveal the navigation menu, and proceed to the application.*</em>
-        </p>
       </div>
     </div>
   </div>
@@ -379,11 +382,9 @@
     </div>
   </div>
 
-<!-- 🔥 JAVASCRIPT FOR UI HACK & PERSISTENT SESSION 🔥 -->
 <script>
     let isLoggedIn = false;
 
-    // IDs match data.json (1: Vivek, 2: Yogesh, 3: Vishav, 4: Nitesh, 5: Sameer)
     const mockUsers = [
         { id: 1, name: "Vivek Bisht", username: "@vivek_dev", track: "Full-Stack Web Development", location: "Chandigarh, India" },
         { id: 2, name: "Yogesh Kumar", username: "@yogesh_builds", track: "Backend Engineering", location: "Chandigarh, India" },
@@ -392,7 +393,6 @@
         { id: 5, name: "Sameer Singh", username: "@sameer_logic", track: "AI & Machine Learning", location: "Chandigarh, India" }
     ];
 
-    // Page load hote hi check karo agar pehle se login ho toh state restore karo
     window.addEventListener('DOMContentLoaded', () => {
         const savedLogin = localStorage.getItem('abtalks_logged_in');
         const savedUserStr = localStorage.getItem('abtalks_user');
@@ -412,13 +412,15 @@
         document.getElementById('navWrapper').classList.add('is-logged-in');
         document.getElementById('activeDot').style.display = 'block';
 
-        // Sabhi dashboard links mein active user ki ID attach kar do
         document.querySelectorAll('a[href*="/dashboard"]').forEach(el => {
             el.href = `/dashboard?userId=${user.id}`;
         });
     }
 
-    function handleProfileClick() {
+    // Pass event object to stop propagation
+    function handleProfileClick(event) {
+        if(event) event.stopPropagation(); // Prevent document click from firing
+        
         if (!isLoggedIn) {
             var loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
             loginModal.show();
@@ -450,7 +452,6 @@
         isLoggedIn = true;
         const randomUser = mockUsers[Math.floor(Math.random() * mockUsers.length)];
         
-        // Browser mein session save karo taaki refresh ya page switch karne par logout na ho
         localStorage.setItem('abtalks_logged_in', 'true');
         localStorage.setItem('abtalks_user', JSON.stringify(randomUser));
 
@@ -466,13 +467,25 @@
         document.getElementById('activeDot').style.display = 'none';
         document.getElementById('navDropdown').classList.remove('show');
 
-        // Reset dashboard links
         document.querySelectorAll('a[href*="/dashboard"]').forEach(el => {
             el.href = `/dashboard`;
         });
     }
 
-    function toggleMenu() {
+    // Pass event object to stop propagation
+    function toggleMenu(event) {
+        if(event) event.stopPropagation(); // Prevent document click from firing immediately
         document.getElementById('navDropdown').classList.toggle('show');
     }
+    
+    // REQ 2: Added event listener to close menu when clicking anywhere else
+    document.addEventListener('click', function(event) {
+        var dropdown = document.getElementById('navDropdown');
+        var hamburgerBtn = document.getElementById('hamburgerBtn');
+        
+        // If the dropdown is open AND the click happened outside the dropdown AND outside the hamburger button
+        if (dropdown.classList.contains('show') && !dropdown.contains(event.target) && !hamburgerBtn.contains(event.target)) {
+            dropdown.classList.remove('show');
+        }
+    });
 </script>

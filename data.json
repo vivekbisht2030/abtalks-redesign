@@ -4,39 +4,74 @@
       "id": 1,
       "name": "Vivek Bisht",
       "streak": 12,
-      "progress": 12
+      "progress": 12,
+      "track": "Full-Stack Web Development",
+      "currentTaskTitle": "Day 12 Challenge",
+      "currentTaskDesc": "Today's focus is on backend integration. You need to build a RESTful API endpoint that handles user form submissions and stores the data correctly in your database schema. Don't forget to validate the inputs!",
+      "pastTasks": [
+        { "day": 11, "title": "Database Schema", "time": "11:45 PM" },
+        { "day": 10, "title": "Frontend Forms", "time": "10:20 PM" },
+        { "day": 9, "title": "UI Styling", "time": "09:15 PM" }
+      ]
     },
     {
       "id": 2,
       "name": "Yogesh Kumar",
-      "streak": 11,
-      "progress": 11
+      "streak": 15,
+      "progress": 15,
+      "track": "Backend Engineering",
+      "currentTaskTitle": "Day 15 Challenge",
+      "currentTaskDesc": "Time to optimize! Implement a Redis caching layer to your existing API to reduce database calls. Measure the response time before and after.",
+      "pastTasks": [
+        { "day": 14, "title": "JWT Authentication", "time": "10:30 PM" },
+        { "day": 13, "title": "Password Hashing", "time": "11:10 PM" },
+        { "day": 12, "title": "API Rate Limiting", "time": "08:45 PM" }
+      ]
     },
     {
       "id": 3,
       "name": "Vishavpreet Singh",
       "streak": 8,
-      "progress": 10
+      "progress": 8,
+      "track": "Data Structures & Algorithms",
+      "currentTaskTitle": "Day 8 Challenge",
+      "currentTaskDesc": "Today we dive into Graphs. Write an algorithm to perform Breadth-First Search (BFS) on an unweighted graph and return the shortest path from the source.",
+      "pastTasks": [
+        { "day": 7, "title": "Binary Tree Inversion", "time": "09:00 PM" },
+        { "day": 6, "title": "Dynamic Programming Intro", "time": "11:55 PM" },
+        { "day": 5, "title": "Merge Sort Implementation", "time": "10:15 PM" }
+      ]
     },
     {
       "id": 4,
       "name": "Nitesh Kumar",
       "streak": 5,
-      "progress": 8
+      "progress": 5,
+      "track": "Frontend Architecture",
+      "currentTaskTitle": "Day 5 Challenge",
+      "currentTaskDesc": "State management is crucial. Set up Redux Toolkit in your React application and create a simple slice to manage the user's theme preference (dark/light mode).",
+      "pastTasks": [
+        { "day": 4, "title": "Component Reusability", "time": "08:20 PM" },
+        { "day": 3, "title": "CSS Grid Layouts", "time": "11:30 PM" },
+        { "day": 2, "title": "React Router Setup", "time": "09:40 PM" }
+      ]
     },
     {
       "id": 5,
       "name": "Sameer Singh",
       "streak": 2,
-      "progress": 6
+      "progress": 2,
+      "track": "AI & Machine Learning",
+      "currentTaskTitle": "Day 2 Challenge",
+      "currentTaskDesc": "Let's clean some data. Take the provided Kaggle dataset and write a Python script using Pandas to handle missing values and remove duplicate entries.",
+      "pastTasks": [
+        { "day": 1, "title": "Environment Setup & Jupyter", "time": "10:00 PM" }
+      ]
     }
   ],
   "currentDay": {
-
     "day": 12,
     "title": "Build a Custom UI Component",
-
-    
     "description": "Design and build a responsive card component using Bootstrap.",
     "submitted": false
   }

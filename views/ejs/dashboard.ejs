@@ -154,17 +154,16 @@
             padding: 15px 12px;
         }
 
-        /* 1. Header & Home Button Layout FIX */
         .header-wrap {
             flex-wrap: nowrap !important;
-            align-items: flex-start !important; /* Button ko top par align karega */
+            align-items: flex-start !important; 
             gap: 8px !important;
         }
         .dash-header {
-            flex-grow: 1; /* Text ko poori available jagah lene dega */
+            flex-grow: 1; 
         }
         .dash-header h2 {
-            font-size: 1.15rem !important; /* Halka sa chota taaki emoji fit aaye */
+            font-size: 1.15rem !important; 
             line-height: 1.3 !important;
         }
         .dash-header p {
@@ -176,11 +175,10 @@
             padding: 5px 10px !important;
             font-size: 0.7rem !important;
             white-space: nowrap; 
-            flex-shrink: 0; /* 🔥 YEH MAGIC HAI: Button ko dabne nahi dega 🔥 */
-            margin-top: 2px; /* Heading ke level mein laane ke liye */
+            flex-shrink: 0; 
+            margin-top: 2px; 
         }
 
-        /* 2. Compact Stats Grid (Side by side) */
         .stats-grid {
             grid-template-columns: 1fr 1fr !important;
             gap: 12px !important;
@@ -190,10 +188,9 @@
             padding: 12px !important;
         }
         .stats-grid .dash-card:nth-child(3) {
-            grid-column: span 2; /* 3rd box takes full width */
+            grid-column: span 2; 
         }
 
-        /* 3. Smaller Icons & Text */
         .stat-icon {
             width: 32px !important;
             height: 32px !important;
@@ -216,7 +213,6 @@
             height: 6px !important;
         }
 
-        /* 4. Content Grid */
         .content-grid {
             grid-template-columns: 1fr;
             gap: 15px;
@@ -242,7 +238,6 @@
 </style>
 
 <div class="dashboard-container">
-    <!-- Header with flex-wrap controlled for mobile -->
     <div class="d-flex justify-content-between align-items-center mb-4 header-wrap gap-3">
         <div class="dash-header m-0">
             <h2 class="m-0">Welcome back, <span class="text-gradient"><%= user.name %>!</span> 👋</h2>
@@ -253,6 +248,23 @@
             <i class="fa-solid fa-arrow-left me-1"></i> Home
         </a>
     </div>
+
+    <!-- REQ 4: Dynamic Top % Cohort Logic in EJS -->
+    <% 
+        let standingText = "Rising Star ⭐";
+        let cohortText = "Top 20% Cohort";
+        
+        if (user.streak >= 15) {
+            standingText = "Elite Coder 🔥";
+            cohortText = "Top 1% Cohort";
+        } else if (user.streak >= 10) {
+            standingText = "Consistency King 👑";
+            cohortText = "Top 5% Cohort";
+        } else if (user.streak >= 5) {
+            standingText = "Steady Builder 🛠️";
+            cohortText = "Top 10% Cohort";
+        }
+    %>
 
     <div class="stats-grid">
         <div class="dash-card">
@@ -285,24 +297,25 @@
             <div class="stat-icon icon-trophy">
                 <i class="fa-solid fa-trophy"></i>
             </div>
-            <h3 class="fw-bold fs-4 m-0 text-light mt-2">Top 5% Cohort</h3>
+            <h3 class="fw-bold fs-4 m-0 text-light mt-2"><%= cohortText %></h3>
             <p class="text-secondary small m-0 mt-1">Current Standing</p>
             <div class="mt-3">
-                <span class="badge bg-dark border border-secondary text-light me-1 p-2">Consistency King 👑</span>
+                <span class="badge bg-dark border border-secondary text-light me-1 p-2"><%= standingText %></span>
             </div>
         </div>
     </div>
 
     <div class="content-grid">
+        <!-- REQ 4: Dynamic Task Rendering -->
         <div class="dash-card task-card">
-            <span class="track-badge">Full-Stack Web Development</span>
+            <span class="track-badge"><%= user.track %></span>
             <div class="d-flex justify-content-between align-items-start mb-3">
-                <h3 class="fw-bold text-light m-0 fs-4">Day 12 Challenge</h3>
+                <h3 class="fw-bold text-light m-0 fs-4"><%= user.currentTaskTitle %></h3>
                 <span id="taskStatusBadge" class="badge bg-secondary text-light">Pending ⏳</span>
             </div>
 
             <p class="text-secondary mb-4" style="font-size: 0.95rem; line-height: 1.6;">
-                Today's focus is on backend integration. You need to build a RESTful API endpoint that handles user form submissions and stores the data correctly in your database schema. Don't forget to validate the inputs!
+                <%= user.currentTaskDesc %>
             </p>
 
             <div id="submissionFormArea">
@@ -331,7 +344,7 @@
                 </div>
                 
                 <a href="/day/12" class="btn-glow text-center w-100" style="background: linear-gradient(90deg, #10b981, #059669);">
-                    Proceed to Day 12 Page <i class="fa-solid fa-arrow-right ms-2"></i>
+                    View Progress Tracker <i class="fa-solid fa-arrow-right ms-2"></i>
                 </a>
             </div>
         </div>
@@ -340,35 +353,22 @@
             <h5 class="fw-bold text-light mb-4">Your Journey 🗺️</h5>
 
             <div class="timeline">
-                <div class="d-flex mb-4">
-                    <div class="me-3 text-success">
-                        <i class="fa-solid fa-circle-check fs-5"></i>
-                    </div>
-                    <div>
-                        <h6 class="text-light m-0 mb-1">Day 11: Database Schema</h6>
-                        <p class="text-secondary small m-0">Submitted at 11:45 PM</p>
-                    </div>
-                </div>
-
-                <div class="d-flex mb-4">
-                    <div class="me-3 text-success">
-                        <i class="fa-solid fa-circle-check fs-5"></i>
-                    </div>
-                    <div>
-                        <h6 class="text-light m-0 mb-1">Day 10: Frontend Forms</h6>
-                        <p class="text-secondary small m-0">Submitted at 10:20 PM</p>
-                    </div>
-                </div>
-
-                <div class="d-flex">
-                    <div class="me-3 text-success">
-                        <i class="fa-solid fa-circle-check fs-5"></i>
-                    </div>
-                    <div>
-                        <h6 class="text-light m-0 mb-1">Day 9: UI Styling</h6>
-                        <p class="text-secondary small m-0">Submitted at 09:15 PM</p>
-                    </div>
-                </div>
+                <!-- REQ 5: Dynamic Past Journey Loop -->
+                <% if(user.pastTasks && user.pastTasks.length > 0) { %>
+                    <% user.pastTasks.forEach((task, index) => { %>
+                        <div class="d-flex <%= index !== user.pastTasks.length - 1 ? 'mb-4' : '' %>">
+                            <div class="me-3 text-success">
+                                <i class="fa-solid fa-circle-check fs-5"></i>
+                            </div>
+                            <div>
+                                <h6 class="text-light m-0 mb-1">Day <%= task.day %>: <%= task.title %></h6>
+                                <p class="text-secondary small m-0">Submitted at <%= task.time %></p>
+                            </div>
+                        </div>
+                    <% }) %>
+                <% } else { %>
+                    <p class="text-secondary small m-0">No past tasks found.</p>
+                <% } %>
             </div>
         </div>
     </div>
@@ -376,8 +376,8 @@
 
 <script>
     function fillDemoLinks() {
-        document.getElementById('githubInput').value = "https://github.com/demo-student/abtalks-day12";
-        document.getElementById('linkedinInput').value = "https://linkedin.com/in/demo-student/post/backend-api";
+        document.getElementById('githubInput').value = "https://github.com/demo-student/abtalks-task";
+        document.getElementById('linkedinInput').value = "https://linkedin.com/in/demo-student/post/update";
     }
 
     function submitTaskProof() {
