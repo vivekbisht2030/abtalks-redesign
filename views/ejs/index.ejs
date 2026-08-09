@@ -33,7 +33,6 @@
         margin: 0;
     }
 
-    /* Right side controls wrapper */
     .nav-controls {
         display: flex;
         gap: 16px;
@@ -41,7 +40,6 @@
         position: relative;
     }
 
-    /* Buttons */
     .btn-nav-primary {
         background: linear-gradient(90deg, #6366f1, #8b5cf6);
         color: white;
@@ -85,7 +83,6 @@
         }
     }
 
-    /* Hamburger Menu Button */
     .hamburger-btn {
         background: transparent;
         border: none;
@@ -97,7 +94,6 @@
     }
     .hamburger-btn:hover { color: #818cf8; }
 
-    /* Circular Profile Button */
     .btn-profile-circle {
         width: 42px;
         height: 42px;
@@ -126,7 +122,6 @@
         display: none; 
     }
 
-    /* Mobile Dropdown Menu */
     .mobile-dropdown {
         display: none; 
         position: absolute;
@@ -155,7 +150,6 @@
         transition: all 0.2s;
     }
     
-    /* REQ 1: Added visual feedback (glow/highlight) on click for secondary link */
     .dropdown-link:active {
         background-color: rgba(255, 255, 255, 0.1);
         border-color: #cbd5e1;
@@ -262,18 +256,17 @@
     
     <div id="navWrapper" class="nav-controls">
         <div class="auth-desktop">
-            <a href="/day/12" class="btn-nav-secondary">Progress Tracker</a>
-            <a href="/dashboard" class="btn-nav-primary">Dashboard 🚀</a>
+            <a href="/day/12" class="btn-nav-secondary dynamic-day-link">Progress Tracker</a>
+            <a href="/dashboard" class="btn-nav-primary dynamic-dash-link">Dashboard 🚀</a>
         </div>
 
-        <!-- Added ID to hamburger button for easier outside click detection -->
         <button id="hamburgerBtn" class="hamburger-btn auth-mobile" onclick="toggleMenu(event)">
             <i class="fa-solid fa-bars"></i>
         </button>
         
         <div id="navDropdown" class="mobile-dropdown">
-            <a href="/dashboard" class="dropdown-link primary">Dashboard 🚀</a>
-            <a href="/day/12" class="dropdown-link">Progress Tracker</a>
+            <a href="/dashboard" class="dropdown-link primary dynamic-dash-link">Dashboard 🚀</a>
+            <a href="/day/12" class="dropdown-link dynamic-day-link">Progress Tracker</a>
         </div>
 
         <button id="profileCircleBtn" class="btn-profile-circle" onclick="handleProfileClick(event)">
@@ -412,15 +405,17 @@
         document.getElementById('navWrapper').classList.add('is-logged-in');
         document.getElementById('activeDot').style.display = 'block';
 
-        document.querySelectorAll('a[href*="/dashboard"]').forEach(el => {
+        document.querySelectorAll('.dynamic-dash-link').forEach(el => {
             el.href = `/dashboard?userId=${user.id}`;
+        });
+        
+        document.querySelectorAll('.dynamic-day-link').forEach(el => {
+            el.href = `/day/12?userId=${user.id}`;
         });
     }
 
-    // Pass event object to stop propagation
     function handleProfileClick(event) {
-        if(event) event.stopPropagation(); // Prevent document click from firing
-        
+        if(event) event.stopPropagation(); 
         if (!isLoggedIn) {
             var loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
             loginModal.show();
@@ -467,24 +462,25 @@
         document.getElementById('activeDot').style.display = 'none';
         document.getElementById('navDropdown').classList.remove('show');
 
-        document.querySelectorAll('a[href*="/dashboard"]').forEach(el => {
+        document.querySelectorAll('.dynamic-dash-link').forEach(el => {
             el.href = `/dashboard`;
+        });
+        
+        document.querySelectorAll('.dynamic-day-link').forEach(el => {
+            el.href = `/day/12`;
         });
     }
 
-    // Pass event object to stop propagation
     function toggleMenu(event) {
-        if(event) event.stopPropagation(); // Prevent document click from firing immediately
+        if(event) event.stopPropagation(); 
         document.getElementById('navDropdown').classList.toggle('show');
     }
     
-    // REQ 2: Added event listener to close menu when clicking anywhere else
     document.addEventListener('click', function(event) {
         var dropdown = document.getElementById('navDropdown');
         var hamburgerBtn = document.getElementById('hamburgerBtn');
         
-        // If the dropdown is open AND the click happened outside the dropdown AND outside the hamburger button
-        if (dropdown.classList.contains('show') && !dropdown.contains(event.target) && !hamburgerBtn.contains(event.target)) {
+        if (dropdown && dropdown.classList.contains('show') && !dropdown.contains(event.target) && !hamburgerBtn.contains(event.target)) {
             dropdown.classList.remove('show');
         }
     });
